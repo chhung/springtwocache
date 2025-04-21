@@ -25,13 +25,13 @@ public class ProductServiceImpl implements ProductService {
     return productRepository.findAll();
   }
 
-  @Cacheable(value = "products", key = "#id", cacheManager = "caffeineCacheManager")
+  @Cacheable(value = "products", key = "#id", cacheManager = "redisCacheManager")
   public Product getProductById(Long id) {
     log.info("Getting product with ID {} from the database", id);
     return productRepository.findById(id);
   }
 
-  @CachePut(value = "products", key = "#result.id", cacheManager = "caffeineCacheManager")
+  @CachePut(value = "products", key = "#result.id", cacheManager = "redisCacheManager")
   @CacheEvict(value = "products", key = "allProducts", cacheManager = "caffeineCacheManager")
   public Product saveProduct(Product product) {
     log.info("Saving product to the database");
