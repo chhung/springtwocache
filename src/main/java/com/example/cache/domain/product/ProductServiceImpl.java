@@ -19,7 +19,10 @@ public class ProductServiceImpl implements ProductService {
     this.productRepository = productRepository;
   }
 
-  @Cacheable(value = "products", key = "'allProducts'", cacheManager = "redisCacheManager")
+  @Caching( cacheable = {
+      @Cacheable(value = "products", key = "'allProducts'", cacheManager = "redisCacheManager"),
+      @Cacheable(value = "products", key = "'#result.id'", cacheManager = "redisCacheManager")
+  })
   public List<Product> getAllProducts() {
     log.info("Getting all products from the database");
     return productRepository.findAll();
